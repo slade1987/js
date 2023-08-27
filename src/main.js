@@ -8,12 +8,9 @@ fetch(API_URL_GEO_DATA)
 .then((resp) => resp.json()).then(function(data){
     let mas = (data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos).split(' ')
     if (mas.length !=0){
-        console.log(mas)
-
+   
         fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${mas[0]}&longitude=${mas[1]}&hourly=pm10,pm2_5`)
         .then((res) => res.json()).then(function(rezult){
-            console.log(rezult)
-
             let table  = document.getElementById('air-pollution')
             let html = " ";
             html = "<table> <tr><td>Время</td> <td>Количество частиц pm10  </td> <td>Количество частиц pm2_5</td></tr>"
@@ -28,7 +25,7 @@ fetch(API_URL_GEO_DATA)
 
             html += "</table>"      
             table.innerHTML = html
-            
+
         })
     } 
     else{
