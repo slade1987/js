@@ -22,24 +22,44 @@ fetch(API_URL_GEO_DATA)
                 html += "<td>" + rezult.hourly.pm2_5[i] + "</td>" 
                 html += "</tr>"
             }
+            
+            const  getAvg = (num) => {
+                return num.reduce((a,b)=> (a+b)) / num.length;
+            }
+             
+            html += "<tr><td>Среднее значение </td> <td align=center>" + getAvg(rezult.hourly.pm10).toFixed(2) + "</td>"
+            html += "<td>" + getAvg(rezult.hourly.pm2_5).toFixed(2) + "</td></tr>"
 
             html += "</table>"      
             table.innerHTML = html
+
+            let ctx = document.getElementById('MyChart')
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                  labels: ['PM10','PM2_5'],
+                  datasets: [{
+                    label: '# среднее значение за сутки',
+                    data: [getAvg(rezult.hourly.pm10).toFixed(2), getAvg(rezult.hourly.pm2_5).toFixed(2) ],
+                    borderWidth: 1
+                  }]
+                },
+                options: {
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+
+              });
 
         })
     } 
     else{
         console.log("Массив пуст")
     }
+
        
-
-
-
-    
-
-
-
-
-
-
 }) 
+
